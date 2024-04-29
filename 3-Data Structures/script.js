@@ -437,3 +437,272 @@ console.log(
 // Arrays and optional chaining
 const users = [{ name: 'Jonas', age: 20 }];
 console.log(users[1]?.name ?? 'user doesnot exist');*/
+
+// Looping over objects
+/*********************** */
+/*//1) Using object keys
+const daysOpen = Object.keys(hours);
+console.log(daysOpen);
+
+let openStr = `We are open on ${daysOpen.length} days: `;
+for (const day of daysOpen) {
+  openStr = openStr + `${day} `;
+}
+console.log(openStr);
+
+//2) Using object values
+const values = Object.values(hours);
+console.log(values);
+
+//3) Using object keys and values
+const entries = Object.entries(hours);
+console.log(entries);
+
+for (const x of entries) {
+  console.log(x);
+}
+
+for (const [key, value] of entries) {
+  console.log(key, value);
+}
+
+for (const [key, { open, close }] of entries) {
+  console.log(`We open on ${key} at ${open} and close at ${close}`);
+}*/
+
+// Coding Exercise - 2
+/*1. Loop over the game.scored array and print each player name to the console, along with the goal number (Example: "Goal 1: Lewandowski")
+2. Use a loop to calculate the average odd and log it to the console (We already studied how to calculate averages, you can go check if you don't remember)
+3. Print the 3 odds to the console, but in a nice formatted way, exaclty like this:
+      Odd of victory Bayern Munich: 1.33
+      Odd of draw: 3.25
+      Odd of victory Borrussia Dortmund: 6.5
+Get the team names directly from the game object, don't hardcode them (except for "draw"). HINT: Note how the odds and the game objects have the same property names 😉
+
+BONUS: Create an object called 'scorers' which contains the names of the players who scored as properties, and the number of goals as the value. In this game, it will look like this:
+      {
+        Gnarby: 1,
+        Hummels: 1,
+        Lewandowski: 2
+      }
+
+GOOD LUCK 😀
+*/
+/*const game = {
+  team1: 'Bayern Munich',
+  team2: 'Borrussia Dortmund',
+  players: [
+    [
+      'Neuer',
+      'Pavard',
+      'Martinez',
+      'Alaba',
+      'Davies',
+      'Kimmich',
+      'Goretzka',
+      'Coman',
+      'Muller',
+      'Gnarby',
+      'Lewandowski',
+    ],
+    [
+      'Burki',
+      'Schulz',
+      'Hummels',
+      'Akanji',
+      'Hakimi',
+      'Weigl',
+      'Witsel',
+      'Hazard',
+      'Brandt',
+      'Sancho',
+      'Gotze',
+    ],
+  ],
+  score: '4:0',
+  scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
+  date: 'Nov 9th, 2037',
+  odds: {
+    team1: 1.33,
+    x: 3.25,
+    team2: 6.5,
+  },
+};
+
+// task - 1
+for (let i = 0; i < game.scored.length; i++) {
+  console.log(`Goal ${i + 1}: ${game.scored[i]}`);
+}
+// OR
+
+for (let [i, player] of game.scored.entries()) {
+  console.log(`Goal ${i + 1}: ${player}`);
+}
+
+// task - 2
+const odds = Object.values(game.odds);
+let sum = 0;
+for (let odd of odds) {
+  sum = sum + odd;
+}
+const average = sum / odds.length;
+console.log(average);
+
+// task - 3
+const [team1, draw, team2] = Object.entries(game.odds);
+console.log(team1, draw, team2);
+for (let [team, odd] of Object.entries(game.odds)) {
+  if (team === 'x') {
+    console.log(`Odd of draw: ${odd}`);
+  } else {
+    console.log(`Odd of victory ${game[team]}: ${odd}`);
+  }
+}
+
+// task - 4
+*/
+
+/********************************************* */
+// SETS
+/************** */
+/*const ordersSet = new Set(['pasta', 'pizza', 'lollipop', 'pizza']);
+console.log(ordersSet);
+
+console.log(ordersSet.size);
+console.log(ordersSet.has('pizza'));
+console.log(ordersSet.has('bread'));
+console.log(ordersSet.add('garlic bread'));
+// console.log(ordersSet);
+console.log(ordersSet.delete('pasta'));
+console.log(ordersSet);
+
+// ordersSet.clear();
+
+// Looping over sets
+for (const i of ordersSet) {
+  console.log(i);
+}
+
+// Sets use-case
+const staff = ['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef'];
+const staffUnique = [...new Set(staff)];
+console.log(staffUnique);
+*/
+
+// MAPS
+/************************ */
+/*const restaurantMap = new Map();
+restaurantMap.set('name', 'Faltu');
+console.log(restaurantMap.set(1, 'Cuttack'));
+// set method returns the updated map, so we can chain the set methods
+console.log(restaurantMap.set(true, 'We are open').set(false, 'We are closed'));
+
+// get method to retrieve value from the map
+console.log(restaurantMap.get(true));
+
+// another way to create map
+const question = new Map([
+  ['question', 'What is the best cuisine in the world '],
+  [1, 'Indian'],
+  [2, 'Italian'],
+  [3, 'Korean'],
+  [true, 'Correct choice'],
+  [false, 'Try again'],
+  ['correct', 1],
+]);
+
+console.log(question);
+
+// converting objects into maps by using Object.entries
+const hoursMap = new Map(Object.entries(hours));
+console.log(hoursMap);
+
+// looping over maps
+console.log(question.get('question'));
+for (const [key, value] of question) {
+  if (typeof key === 'number') console.log(`Option ${key}: ${value}`);
+}
+// const answer = Number(prompt('Your answer'));
+const answer = 3;
+
+console.log(question.get(answer === question.get('correct')));
+
+// Convert map to array
+console.log([...question]);
+*/
+
+// Coding Challenge #3
+
+/* 
+Let's continue with our football betting app! This time, we have a map with a log of the events that happened during the game. The values are the events themselves, and the keys are the minutes in which each event happened (a football game has 90 minutes plus some extra time).
+
+1. Create an array 'events' of the different game events that happened (no duplicates)
+2. After the game has finished, is was found that the yellow card from minute 64 was unfair. So remove this event from the game events log.
+3. Print the following string to the console: "An event happened, on average, every 9 minutes" (keep in mind that a game has 90 minutes)
+4. Loop over the events and log them to the console, marking whether it's in the first half or second half (after 45 min) of the game, like this:
+      [FIRST HALF] 17: ⚽️ GOAL
+
+GOOD LUCK 😀
+*/
+/*const gameEvents = new Map([
+  [17, '⚽️ GOAL'],
+  [36, '🔁 Substitution'],
+  [47, '⚽️ GOAL'],
+  [61, '🔁 Substitution'],
+  [64, '🔶 Yellow card'],
+  [69, '🔴 Red card'],
+  [70, '🔁 Substitution'],
+  [72, '🔁 Substitution'],
+  [76, '⚽️ GOAL'],
+  [80, '⚽️ GOAL'],
+  [92, '🔶 Yellow card'],
+]);
+
+// task - 1
+console.log([...new Set([...gameEvents.values()])]);
+
+// task - 2
+gameEvents.delete(64);
+console.log(gameEvents);
+
+// task - 3
+console.log(
+  `An event happened, on average, every ${90 / gameEvents.size} minutes`
+);
+
+// task - 4
+for (const [time, event] of gameEvents) {
+  if (time > 45) {
+    console.log(`[Second Half] ${time}: ${event}`);
+  } else {
+    console.log(`[First Half] ${time}: ${event}`);
+  }
+}*/
+
+// STRINGS
+/************************* */
+
+const airline = 'Indigo';
+const plane = 'A320';
+
+const str = 'well hello there. say hello';
+
+console.log(plane[0]);
+console.log(plane.length);
+
+console.log(str.indexOf('hello'));
+console.log(str.lastIndexOf('hello'));
+
+console.log('play'.slice(-1));
+
+const checkMiddleSeat = function (seat) {
+  const s = seat.slice(-1);
+  if (s === 'B' || s === 'E') {
+    console.log('It is a middle seat');
+  } else {
+    console.log('Not a middle seat');
+  }
+};
+
+checkMiddleSeat('13B');
+checkMiddleSeat('13A');
