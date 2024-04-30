@@ -1,8 +1,8 @@
 'use strict';
 
 // Data needed for a later exercise
-const flights =
-  '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
+/*const flights =
+  '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';*/
 
 // Data needed for first part of the section
 
@@ -682,8 +682,8 @@ for (const [time, event] of gameEvents) {
 // STRINGS
 /************************* */
 
-const airline = 'Indigo';
-const plane = 'A320';
+/*const airline = 'Indigo';
+const plane = 'A320neo';
 
 const str = 'well hello there. say hello';
 
@@ -706,3 +706,163 @@ const checkMiddleSeat = function (seat) {
 
 checkMiddleSeat('13B');
 checkMiddleSeat('13A');
+
+console.log('hello, John'.replace('John', 'Jonas'));
+console.log('hi there, hello there'.replaceAll('there', 'everyone'));
+console.log('hi there, hello there'.replace(/there/g, 'everyone'));
+
+const checkBaggage = function (items) {
+  const baggage = items.toLowerCase();
+  if (baggage.includes('knife') || baggage.includes('gun')) {
+    console.log('You are not allowed to board the plane');
+  } else {
+    console.log('Welcome aboard');
+  }
+};
+checkBaggage('food and knife');
+checkBaggage('food and water');
+
+console.log(plane.startsWith('A'));
+console.log(plane.startsWith('Airbus'));
+console.log(plane.endsWith('neo'));
+
+// Split and Join
+console.log('a+very+nice+cake'.split('+'));
+
+const [firstName, lastName] = 'Animesh Mohanty'.split(' ');
+console.log(firstName);
+console.log(lastName);
+
+const newName = ['Mr.', firstName, lastName.toUpperCase()].join(' ');
+console.log(newName);
+
+const passenger = 'jessica ann smith davis';
+console.log(passenger.toUpperCase());
+
+const nameArr = passenger.split(' ');
+const newNameArr = [];
+for (const name of nameArr) {
+  const nameCapitalized = name.slice(0, 1).toUpperCase() + name.slice(1);
+  newNameArr.push(nameCapitalized);
+}
+console.log(newNameArr.join(' '));
+
+const nameCapitalize = function (name) {
+  const newName = name.toLowerCase();
+  const nameArr = newName.split(' ');
+  const newNameArr = [];
+  for (const n of nameArr) {
+    const nameCapitalized = n.slice(0, 1).toUpperCase() + n.slice(1);
+    newNameArr.push(nameCapitalized);
+  }
+  console.log(newNameArr.join(' '));
+};
+
+nameCapitalize('animesh mohanty');
+nameCapitalize('joHn Smith');
+
+const nameArr1 = 'animesh mohanty'.split(' ');
+const newNameArr1 = [];
+for (const n of nameArr1) {
+  const newName = n.replace(n[0], n[0].toUpperCase());
+  newNameArr1.push(newName);
+}
+
+console.log(newNameArr1.join(' '));
+
+// Padding
+const maskedCreditCard = function (number) {
+  const str = number + '';
+  const last = str.slice(-4);
+  return last.padStart(str.length, '*');
+};
+
+console.log(maskedCreditCard(54866323));
+console.log(maskedCreditCard(5417888566986623));
+*/
+
+// Coding Challenge #4
+
+/* 
+Write a program that receives a list of variable names written in underscore_case and convert them to camelCase.
+
+The input will come from a textarea inserted into the DOM (see code below), and conversion will happen when the button is pressed.
+
+THIS TEST DATA (pasted to textarea)
+underscore_case
+ first_name
+Some_Variable 
+  calculate_AGE
+delayed_departure
+
+SHOULD PRODUCE THIS OUTPUT (5 separate console.log outputs)
+underscoreCase      ✅
+firstName           ✅✅
+someVariable        ✅✅✅
+calculateAge        ✅✅✅✅
+delayedDeparture    ✅✅✅✅✅
+
+HINT 1: Remember which character defines a new line in the textarea 😉
+HINT 2: The solution only needs to work for a variable made out of 2 words, like a_b
+HINT 3: Start without worrying about the ✅. Tackle that only after you have the variable name conversion working 😉
+HINT 4: This challenge is difficult on purpose, so start watching the solution in case you're stuck. Then pause and continue!
+
+Afterwards, test with your own test data!
+
+GOOD LUCK 😀
+*/
+/*document.body.append(document.createElement('textarea'));
+document.body.append(document.createElement('button'));
+
+const stringConvertor = function (arr) {
+  for (const [i, el] of arr.entries()) {
+    const stringLower = el.toLowerCase().trim();
+    const newArr = [stringLower.split('_')[0]];
+    const secondWord = stringLower.split('_')[1];
+    const secondWordCapitalize = secondWord.replace(
+      secondWord[0],
+      secondWord[0].toUpperCase()
+    );
+    newArr.push(secondWordCapitalize);
+    const newStr = newArr.join('');
+    console.log(`${newStr.padEnd(20)}${'✅'.repeat(i + 1)}`);
+  }
+};
+// console.log(stringConvertor('  calculate_AGE'));
+// console.log('first_Name'.toLowerCase());
+
+document.querySelector('button').addEventListener('click', () => {
+  const arr = document.querySelector('textarea').value.split('\n');
+  stringConvertor(arr);
+});
+
+const strFunction = function (arr) {
+  for (const [index, word] of arr.entries()) {
+    const [first, second] = word.toLowerCase().trim().split('_');
+    console.log(first, second);
+    const output = `${first}${second.replace(
+      second[0],
+      second[0].toUpperCase()
+    )}`;
+    console.log(output);
+  }
+};
+strFunction(['underscore_case']);
+*/
+
+/*const flights =
+  '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
+
+const getCode = str => {
+  return str.slice(0, 3).toUpperCase();
+};
+
+for (const flight of flights.split('+')) {
+  const [schedule, from, to, time] = flight.split(';');
+  const output = `${
+    schedule.includes('Delayed') ? '⛔' : ''
+  }${schedule.replaceAll('_', ' ')} from ${getCode(from)} to ${getCode(
+    to
+  )} (${time.replace(':', 'h')})`.padStart(41);
+  console.log(output);
+}*/
