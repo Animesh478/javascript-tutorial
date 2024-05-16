@@ -61,18 +61,22 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-// Displaying the transactions in the account
-const displayMovements = function (movements) {
+// DISPLAYING TRANSACTIONS
+const displayMovements = function (account, sort = false) {
   containerMovements.innerHTML = '';
 
-  movements.forEach((mov, i) => {
+  const movs = sort
+    ? account.movements.slice().sort((a, b) => a - b)
+    : account.movements;
+
+  movs.forEach((mov, i) => {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
       <div class="movements__row">
           <div class="movements__type movements__type--${type}">${
       i + 1
     }. ${type}</div>
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov}€</div>
      </div>
     `;
 
@@ -80,18 +84,50 @@ const displayMovements = function (movements) {
   });
 };
 
-displayMovements(account1.movements);
+// displayMovements(account1.movements);
 
-// Display the total balance
+// DISPLAYING TOTAL BALANCE
 const calcDisplayBalance = function (acct) {
   const balance = acct.movements.reduce((sum, mov) => {
     return sum + mov;
   }, 0);
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${balance}€`;
+  acct.balance = balance;
 };
-calcDisplayBalance(account1);
+// calcDisplayBalance(account1);
 
-// Creating username
+// DISPLAY SUMMARY
+const calcDisplaySummary = function (account) {
+  const incomes = account.movements
+    .filter(mov => mov > 0)
+    .reduce((sum, mov) => sum + mov, 0);
+
+  labelSumIn.textContent = `${incomes}€`;
+
+  const out = account.movements
+    .filter(mov => mov < 0)
+    .reduce((sum, mov) => sum + mov, 0);
+  labelSumOut.textContent = `${Math.abs(out)}€`;
+
+  const interest = account.movements
+    .filter(mov => mov > 0)
+    .map(mov => (mov * account.interestRate) / 100)
+    .filter(int => int >= 1)
+    .reduce((sum, int) => sum + int, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+
+// UPDATE UI
+const updateUI = function (account) {
+  // DISPLAY MOVEMENTS
+  displayMovements(account);
+  // DISPLAY BALANCE
+  calcDisplayBalance(account);
+  // DISPLAY SUMMARY
+  calcDisplaySummary(account);
+};
+
+// CREATING USERNAME
 /*const user = 'Steven Thomas Williams';
 const username = user
   .toLowerCase()
@@ -117,6 +153,99 @@ const createUsernames = function (accounts) {
 
 createUsernames(accounts);
 
+// EVENT HANDLER
+let currentAccount;
+
+// LOGIN FUNCTIONALITY
+/********************** */
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault();
+  currentAccount = accounts.find(account => {
+    return account.username === inputLoginUsername.value;
+  });
+  // console.log(currentAccount);
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // DISPLAY UI AND WELCOME MESSAGE
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
+    containerApp.style.opacity = 100;
+
+    updateUI(currentAccount);
+
+    // CLEAR INPUT FIELDS
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+  }
+});
+
+// TRANSFER FUNCTIONALITY
+/************************* */
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(account => {
+    return account.username === inputTransferTo.value;
+  });
+
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    currentAccount.balance >= amount &&
+    receiverAcc.username !== currentAccount.username
+  ) {
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+  }
+
+  updateUI(currentAccount);
+
+  inputTransferAmount.value = inputTransferTo.value = '';
+});
+
+// LOAN FUNCTIONALITY
+/********************** */
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  const condition = currentAccount.movements.some(mov => {
+    return mov > 0.1 * amount;
+  });
+  if (amount > 0 && condition) {
+    currentAccount.movements.push(amount);
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+});
+
+// CLOSE ACCOUNT FUNCTIONALITY
+/****************************** */
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    currentAccount.username === inputCloseUsername.value &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    const index = accounts.findIndex(account => {
+      return account.username === currentAccount.username;
+    });
+    // DELETE ACCOUNT
+    accounts.splice(index, 1);
+
+    // HIDE UI
+    containerApp.style.opacity = 0;
+  }
+  inputClosePin.value = inputCloseUsername.value = '';
+});
+
+// SORT FUNCTIONALITY
+let sorted = false;
+btnSort.addEventListener('click', () => {
+  displayMovements(currentAccount, !sorted);
+  sorted = !sorted;
+});
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -294,3 +423,65 @@ GOOD LUCK 😀
 };
 console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]));
 console.log(calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]));*/
+
+// CHAINING METHODS
+/******************** */
+/*const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+const depositsUSD = movements
+  .filter(mov => mov > 0)
+  .map(mov => mov * 1.1)
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(depositsUSD);*/
+
+// FIND METHOD
+/*************** */
+/*const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+console.log(movements.find(mov => mov < 0));
+
+for (const acct of accounts) {
+  if (acct.owner === 'Jessica Davis') {
+    console.log(acct);
+  }
+}*/
+
+// SOME METHOD
+/*************** */
+/*const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+console.log(movements.includes(200)); // checks for equality
+
+const abv3000 = movements.some(mov => mov > 3000);
+console.log(abv3000);*/
+
+// FLAT AND FLATMAP METHODS
+/**************************** */
+/*const arr = [[1, 22, 3], [4, 5, 6], 7, 0];
+console.log(arr.flat());
+
+const arrNested = [[1, [22, 3]], [4, 5, 6], 7, 0];
+console.log(arrNested.flat(2));
+
+const allMovements = accounts.map(account => account.movements).flat();
+console.log(allMovements);
+const totalBalance = allMovements.reduce((acc, mov) => {
+  return acc + mov;
+}, 0);
+console.log(totalBalance);
+
+const allMovements2 = accounts.flatMap(account => account.movements);
+console.log(allMovements2);*/
+
+// ARRAY SORTING
+/****************** */
+/*const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+const sortedMovements = movements.sort((a, b) => {
+  return a - b;
+});
+console.log(sortedMovements);
+
+const sortedMovementsDesc = movements.sort((a, b) => {
+  return b - a;
+});
+console.log(sortedMovementsDesc);
+*/
