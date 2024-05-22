@@ -115,6 +115,7 @@ const calcFormattedMovement = function (value, locale, currency) {
   }).format(value);
 };
 
+// DISPLAY MOVEMENTS
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -147,6 +148,7 @@ const displayMovements = function (acc, sort = false) {
   });
 };
 
+// CALCULATING THE TOTAL BALANCE
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
   labelBalance.textContent = calcFormattedMovement(
@@ -156,6 +158,7 @@ const calcDisplayBalance = function (acc) {
   );
 };
 
+// DISPLAYING THE SUMMARY
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
@@ -190,6 +193,7 @@ const calcDisplaySummary = function (acc) {
   );
 };
 
+// CREATING USERNAME
 const createUsernames = function (accs) {
   accs.forEach(function (acc) {
     acc.username = acc.owner
@@ -201,6 +205,7 @@ const createUsernames = function (accs) {
 };
 createUsernames(accounts);
 
+// UPDATING UI
 const updateUI = function (acc) {
   // Display movements
   displayMovements(acc);
@@ -212,13 +217,37 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+// IMPLEMENTING THE LOGOUT TIMER
+const logOutTimer = function () {
+  const tick = function () {
+    const minutes = String(Math.trunc(time / 60)).padStart(2, 0);
+    const seconds = `${time % 60}`.padStart(2, 0);
+    // display every second how much time left
+    labelTimer.textContent = `${minutes}:${seconds}`;
+    // when timer reaches 0, stop the timer and log the user out
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = 'Login to get started';
+      containerApp.style.opacity = 0;
+    }
+    // decrease the time by 1s
+    time--;
+  };
+  // set the initial value for the timer
+  let time = 30;
+
+  tick();
+
+  // call the setInterval function every one second
+  const timer = setInterval(tick, 1000);
+  return timer;
+};
+
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+let currentAccount, timer;
 
+// LOGIN FUNCTIONALITY
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
   e.preventDefault();
@@ -264,11 +293,15 @@ btnLogin.addEventListener('click', function (e) {
       option
     ).format(now);
 
+    if (timer) clearInterval(timer);
+    timer = logOutTimer(); // starting the timer
+
     // Update UI
     updateUI(currentAccount);
   }
 });
 
+// TRANSFER FUNCTIONALITY
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
   const amount = Number(inputTransferAmount.value);
@@ -292,8 +325,11 @@ btnTransfer.addEventListener('click', function (e) {
     // Update UI
     updateUI(currentAccount);
   }
+  if (timer) clearInterval(timer);
+  timer = logOutTimer();
 });
 
+// LOAN FUNCTIONALITY
 btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -301,15 +337,19 @@ btnLoan.addEventListener('click', function (e) {
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
-    currentAccount.movements.push(amount);
-    currentAccount.movementsDates.push(new Date().toISOString());
-
-    // Update UI
-    updateUI(currentAccount);
+    setTimeout(() => {
+      currentAccount.movements.push(amount);
+      currentAccount.movementsDates.push(new Date().toISOString());
+      // Update UI
+      updateUI(currentAccount);
+    }, 3000);
   }
   inputLoanAmount.value = '';
+  if (timer) clearInterval(timer);
+  timer = logOutTimer();
 });
 
+// CLOSE ACCOUNT FUNCTIONALITY
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -397,3 +437,33 @@ const numDays = function (date1, date2) {
 };
 console.log(numDays(future, present));
 */
+
+// SET TIMEOUT
+/*const ingredients = ['olives', 'spinach'];
+console.log(...ingredients);
+const pizzaTimer = setTimeout(
+  (ing1, ing2) => {
+    console.log(`Your pizza with ${ing1} and ${ing2} is on the way`);
+  },
+  3000,
+  ...ingredients
+);
+console.log(pizzaTimer);
+// cancelling settimeout
+if (ingredients.includes('spinach')) clearTimeout(pizzaTimer);
+*/
+
+// since object is not an iterable we cannot directly spread it like we do with the arrays. we have to specify the object property names in order to extract them from the object
+/*const obj = {
+  name: 'animesh',
+  age: 10,
+};
+const { name, age } = obj;
+console.log(name, age);
+*/
+
+// setInterval
+/*setInterval(() => {
+  const now = new Date();
+  console.log(now);
+}, 1000);*/
