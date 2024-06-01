@@ -3,12 +3,16 @@
 ///////////////////////////////////////
 // Modal window
 
+const header = document.querySelector('header');
+const message = document.createElement('div');
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContainer = document.querySelector('.operations__tab-container');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -36,8 +40,7 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-const header = document.querySelector('header');
-const message = document.createElement('div');
+// Creating the cookie message
 message.classList.add('cookie-message');
 
 message.innerHTML = `We use cookies for improved functionality and analytics <button class="btn btn--close-cookie">Got it!</button>`;
@@ -89,14 +92,37 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
       .scrollIntoView({ behavior: 'smooth' });
   }
 });
+const contentAll = document.querySelectorAll('.operations__content');
+// Tabbed Component
+tabContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab');
+
+  if (!clicked) return;
+
+  // removing the active class from all the tabs
+  tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+
+  // adding active class to the tab which was clicked
+  clicked.classList.add('operations__tab--active');
+
+  // removing the active class from all the content
+  contentAll.forEach(content =>
+    content.classList.remove('operations__content--active')
+  );
+  // displaying content
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
 // STYLES
 /*********************** */
 message.style.backgroundColor = '#37383d';
 message.style.width = '120%'; // using the style property we can set only the inline styles
 
 //  to get the computed styles in the css file
-console.log(getComputedStyle(message).height); // => returns a string
-console.log(Number.parseFloat(getComputedStyle(message).height, 10));
+/*console.log(getComputedStyle(message).height); // => returns a string
+console.log(Number.parseFloat(getComputedStyle(message).height, 10));*/
 message.style.height =
   Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
 
@@ -163,9 +189,20 @@ const randomInt = (min, max) =>
 // DOM TRAVERSING
 /******************* */
 
-const h1 = document.querySelector('h1');
+// Accessing children
+/*const h1 = document.querySelector('h1');
 console.log(h1);
 console.log(h1.childNodes);
 console.log(h1.children);
 console.log(h1.firstElementChild);
+console.log(h1.lastElementChild);
 console.log(h1.firstChild);
+*/
+
+// Accessing parent
+/*console.log(h1.parentElement);
+console.log(h1.parentNode);
+console.log(h1.closest('div')); // to find the closest ancestor of an element
+console.log(h1.closest('header'));
+console.log(h1.closest('.header__img'));
+*/
