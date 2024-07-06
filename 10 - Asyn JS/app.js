@@ -332,7 +332,7 @@ fetchNextPlanets()
 // ASYN/AWAIT
 /**************** */
 
-async function add(x, y) {
+/*async function add(x, y) {
   if (typeof x !== "number" || typeof y !== "number") {
     // throw new Error("X and Y need to be numbers");
     throw "X and Y need to be numbers";
@@ -344,9 +344,10 @@ async function add(x, y) {
 add("e", 5)
   .then((val) => console.log(val))
   .catch((err) => console.log(err));
+*/
 
 // Same thing with promise
-const addPromise = function (x, y) {
+/*const addPromise = function (x, y) {
   return new Promise((resolve, reject) => {
     if (typeof x !== "number" || typeof y !== "number") {
       reject("X and Y are not numbers");
@@ -358,3 +359,133 @@ const addPromise = function (x, y) {
 addPromise("e", 5)
   .then((val) => console.log(val))
   .catch((err) => console.log(err));
+*/
+
+// const starWars = async function () {
+//   const res = await axios.get("https://swapi.dev/api/planetsssss/");
+//   console.log(res.data);
+// };
+
+// one way to catch error in async/await
+/***************************************** */
+// starWars().catch((err) => {
+//   console.log(err.message);
+// });
+
+// second way to catch error
+/****************************** */
+/*const starWars = async function () {
+  try {
+    const res = await axios.get("https://swapi.dev/api/planets/");
+    console.log(res.data);
+  } catch (e) {
+    console.log(e.message);
+  }
+};
+starWars();
+
+console.log("hello there"); //=> will be executed first
+*/
+
+// Multiple awaits
+/************************ */
+/*const btn = document.querySelector("#btn");
+
+const moveBtn = function (element, amount, delay) {
+  return new Promise((resolve, reject) => {
+    const bodyBoundary = document.body.clientWidth;
+    const elRight = element.getBoundingClientRect().right;
+    const left = element.getBoundingClientRect().left;
+
+    if (elRight + amount > bodyBoundary) {
+      reject("Not enough space");
+    } else {
+      setTimeout(() => {
+        element.style.transform = `translateX(${left + amount}px)`;
+        resolve();
+      }, delay);
+    }
+  });
+};
+
+async function animateRight(el, amt) {
+  await moveBtn(el, amt, 1000);
+  await moveBtn(el, amt, 1000);
+  await moveBtn(el, amt, 1000);
+  await moveBtn(el, amt, 1000);
+  await moveBtn(el, amt, 1000);
+  await moveBtn(el, amt, 1000);
+}
+
+animateRight(btn, 300).catch((err) => {
+  console.log(err);
+  animateRight(btn, -100);
+});
+// moveBtn(btn, 300, 1000)
+//   .then(() => moveBtn(btn, 300, 1000))
+//   .then(() => moveBtn(btn, 300, 1000))
+//   .then(() => moveBtn(btn, 300, 1000))
+//   .then(() => moveBtn(btn, 300, 1000))
+//   .catch((err) => console.log(err));
+*/
+
+// Making requests sequentially (one after another)
+
+// async function getPokemons() {
+//   const pokemon1 = await axios.get("https://pokeapi.co/api/v2/pokemon/ditto");
+//   const pokemon2 = await axios.get("https://pokeapi.co/api/v2/pokemon/2");
+//   const pokemon3 = await axios.get("https://pokeapi.co/api/v2/pokemon/3");
+//   console.log(pokemon1.data);
+//   console.log(pokemon2.data);
+//   console.log(pokemon3.data);
+// }
+
+// getPokemons();
+
+// Making requests parallely
+
+// async function getPokemons() {
+//   const prom1 = axios.get("https://pokeapi.co/api/v2/pokemon/ditto");
+//   const prom2 = axios.get("https://pokeapi.co/api/v2/pokemon/2");
+//   const prom3 = axios.get("https://pokeapi.co/api/v2/pokemon/3");
+
+//   const pokemon1 = await prom1;
+//   const pokemon2 = await prom2;
+//   const pokemon3 = await prom3;
+
+//   console.log(pokemon1.data);
+//   console.log(pokemon2.data);
+//   console.log(pokemon3.data);
+// }
+
+// getPokemons();
+
+// ASYN/AWAIT WITH FETCH
+/************************* */
+async function pokemon() {
+  return await fetch("https://pokeapi.co/api/v2/pokemon/3");
+}
+
+pokemon()
+  .then((res) => {
+    return res.json();
+  })
+  .then((data) => console.log(data));
+
+// promise.all()
+/****************** */
+async function getPokemons() {
+  const prom1 = axios.get("https://pokeapi.co/api/v2/pokemon/ditto");
+  const prom2 = axios.get("https://pokeapi.co/api/v2/pokemon/2");
+  const prom3 = axios.get("https://pokeapi.co/api/v2/pokemon/3");
+
+  const results = await Promise.all([prom1, prom2, prom3]);
+
+  console.log(results);
+
+  for (let pokemon of results) {
+    console.log(pokemon.data.name);
+  }
+}
+
+getPokemons();
